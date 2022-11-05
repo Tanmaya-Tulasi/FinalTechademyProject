@@ -14,6 +14,6 @@ namespace EmployeeManagementSystem.Models
         public string DepartmentName { get; set; }
         public string RoleName { get; set; }
         
-        public ICollection<EmployeeModel> EmployeDetails { get; set; }
+        public virtual ICollection<EmployeeModel> EmployeDetails { get; set; }
     }
 }

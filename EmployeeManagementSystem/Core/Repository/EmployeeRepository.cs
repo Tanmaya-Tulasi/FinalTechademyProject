@@ -18,31 +18,95 @@ namespace EmployeeManagementSystem.Core.Repository
         {
             _context = _dbContext;
         }
-        public async Task<ActionResult<IEnumerable<EmployeeDTO>>> GetAllEmployee()
-        {
-            var employee = await _context.Employee
-                .Join(
-                _context.Designation,
-                emp => emp.DesignationID,
-                des => des.DesignationID,
-                (emp, des) => new EmployeeDTO
-                {
-                    ID = emp.ID,
-                    EmployeeID = emp.EmployeeID,
-                    EmployeeName = emp.EmployeeName,
-                    Gender = emp.Gender,
-                    PhoneNumber = emp.PhoneNumber,
-                    Address = emp.Address,
-                    Email = emp.Email,
-                    DesignationID = des.DesignationID,
-                    DesignationName = des.DesignationName,
-                    RoleName = des.RoleName,
-                    DepartmentName = des.DepartmentName,
-                    MemberSince = emp.MemberSince
 
+        public  List<EmployeeDTO> GetAllEmployee()
+        {
+            try
+            {
+                var employee =  _context.Employee
+                    .Join(
+                    _context.Designation,
+                    emp => emp.DesignationID,
+                    des => des.DesignationID,
+                    (emp, des) => new EmployeeDTO
+                    {
+                        ID = emp.ID,
+                        EmployeeID = emp.EmployeeID,
+                        EmployeeName = emp.EmployeeName,
+                        Gender = emp.Gender,
+                        PhoneNumber = emp.PhoneNumber,
+                        Address = emp.Address,
+                        Email = emp.Email,
+                        DesignationID = des.DesignationID,
+                        DesignationName = des.DesignationName,
+                        RoleName = des.RoleName,
+                        DepartmentName = des.DepartmentName,
+                        MemberSince = emp.MemberSince
+
+                    }
+                    ).ToList();
+                if(employee!=null)
+                    return employee;
+                throw new Exception();
+            }
+            catch
+            {
+                throw new Exception();
+            }
+        }
+        public async Task<EmployeeModel> AddEmployee(EmployeeModel employee)
+        {
+            try
+            {
+                await _context.Employee.AddAsync(employee);
+                await _context.SaveChangesAsync();
+                return employee;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+        public async Task<EmployeeModel> DeleteEmployee(int id)
+        {
+            try
+            {
+                var employee = await _context.Employee.FindAsync(id);
+                if (employee == null)
+                    throw new Exception();
+                _context.Employee.Remove(employee);
+                return employee;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+        public async Task<EmployeeModel> UpdateEmployee(int id,EmployeeModel employee)
+        {
+            var e = await _context.Employee.FindAsync(id);
+            try 
+            {
+                if (e != null)
+                {
+                    e.EmployeeID = employee.EmployeeID;
+                    e.EmployeeName = employee.EmployeeName;
+                    e.PhoneNumber = employee.PhoneNumber;
+                    e.Address = employee.Address;
+                    e.Email = employee.Email;
+                    e.Gender = employee.Gender;
+                    e.DesignationID = employee.DesignationID;
+                    e.Designation = employee.Designation;
+                    await _context.SaveChangesAsync();
+                    return employee;
                 }
-                ).ToListAsync();
-            return employee;
+                else
+                    throw new Exception();
+            }
+            catch
+            {
+                throw new Exception() ;
+            }
         }
     }
 }

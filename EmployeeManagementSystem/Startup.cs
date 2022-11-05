@@ -29,7 +29,7 @@ namespace EmployeeManagementSystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddControllers();
+            services.AddControllers();
 
             services.AddDbContext<EmployeeManagementDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("myConnection")));
             services.AddCors(options =>
@@ -42,15 +42,29 @@ namespace EmployeeManagementSystem
             });
 
             services.AddSwaggerGen();
-            services.AddControllers();
+            //services.AddControllers();
 
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
-            services.AddMvc();
-            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+//            services.AddControllers().AddNewtonsoftJson(options =>
+//    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+//);
+          //  services.AddMvc();
+            //services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+           //services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            // services.AddScoped<EmployeeRepository>();
+
+            //services.AddScoped<EmployeeRepository>(sp => {
+            //    DbContextOptionsBuilder<EmployeeManagementDbContext> optsBuilder = new DbContextOptionsBuilder<EmployeeManagementDbContext>();
+            //    optsBuilder.UseSqlServer(Configuration.GetConnectionString(("myConnection")));
+            //    EmployeeManagementDbContext ctx = new EmployeeManagementDbContext(optsBuilder.Options);
+            //    EmployeeRepository svc = new EmployeeRepository(ctx);
+            //    return svc;
+            //});
+
+
+
+            //services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+
         }
 
 

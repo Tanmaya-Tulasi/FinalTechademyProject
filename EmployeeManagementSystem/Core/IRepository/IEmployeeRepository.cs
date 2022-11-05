@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagementSystem.Core.IRepository
 {
-    interface IEmployeeRepository
+  public  interface IEmployeeRepository
     {
-        public  Task<ActionResult<IEnumerable<EmployeeDTO>>> GetAllEmployee();
+        public  List<EmployeeDTO> GetAllEmployee();
+        public Task<EmployeeModel> AddEmployee(EmployeeModel employee);
+        public Task<EmployeeModel> UpdateEmployee(int id, EmployeeModel employee);
+        public Task<EmployeeModel> DeleteEmployee(int id);
 
     }
 }
