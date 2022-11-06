@@ -16,6 +16,10 @@ namespace EmployeeManagementSystem.Controllers
     {
         private readonly IEmployeeRepository employeeRepository;
 
+        public EmployeeController()
+        {
+
+        }
         public EmployeeController(IEmployeeRepository _employeeRepository)
         {
             employeeRepository = _employeeRepository;
@@ -33,8 +37,24 @@ namespace EmployeeManagementSystem.Controllers
                 return BadRequest(e);
             }
         }
+        [HttpGet]
+        [Route("{ID:int}")]
+        public async Task<IActionResult> GetEmployeeById(int ID)
+        {
+            try
+            {
+                var result = await employeeRepository.GetById(ID);
+                if (result == null)
+                    return NotFound();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
         [HttpPost]
-        public async  Task<ActionResult> AddEmployee([FromBody] EmployeeModel employee)
+        public async  Task<IActionResult> AddEmployee([FromBody] EmployeeModel employee)
         {
             try
             {
@@ -57,7 +77,7 @@ namespace EmployeeManagementSystem.Controllers
             {
                 var employee =await employeeRepository.DeleteEmployee(id);
 
-                return Ok(employee);
+                return Ok("Deleted Successfully");
 
             }
             catch(Exception e)

@@ -1,4 +1,6 @@
-﻿using EmployeeManagementSystem.Data;
+﻿using EmployeeManagementSystem.Core.IRepository;
+using EmployeeManagementSystem.Core.Repository;
+using EmployeeManagementSystem.Data;
 using EmployeeManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +15,11 @@ namespace EmployeeManagementSystem.Controllers
     [Route("api/[controller]")]
     public class DesignationController : Controller
     {
-        private readonly EmployeeManagementDbContext dbContext;
+        private readonly IDesignationRepository desig;
 
-        public DesignationController(EmployeeManagementDbContext _dbContext)
+        public DesignationController( IDesignationRepository _designation)
         {
-            dbContext = _dbContext;
+            desig = _designation;
         }
 
         [HttpGet]
@@ -25,10 +27,26 @@ namespace EmployeeManagementSystem.Controllers
         {
             try
             {
-                var result =await  dbContext.Designation.ToListAsync();
+                var result = await desig.GetDesignations();
                 return Ok(result);
             }
             catch(Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+        [HttpGet]
+        [Route("{ID:int}")]
+        public async Task<IActionResult> GetEmployeeById(int ID)
+        {
+            try
+            {
+                var result = await desig.GetDesignationById(ID);
+                if (result == null)
+                    return NotFound();
+                return Ok(result);
+            }
+            catch (Exception e)
             {
                 return BadRequest(e);
             }
@@ -39,8 +57,8 @@ namespace EmployeeManagementSystem.Controllers
         {
             try
             {
-                var result = await dbContext.Designation.AddAsync(designation);
-                await dbContext.SaveChangesAsync();
+                var result = await desig.AddDesignation(designation);
+                
                 return Ok("Added Successfully");
             }
             catch(Exception e)
@@ -50,17 +68,11 @@ namespace EmployeeManagementSystem.Controllers
         }
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> UpdateDesignation([FromRoute] int id, DesignationModel desig)
+        public async Task<IActionResult> UpdateDesignation([FromRoute] int id, DesignationModel design)
         {
             try
             {
-                var designation = await dbContext.Designation.FindAsync(id);
-                if (designation == null)
-                    return NotFound();
-                designation.DepartmentName = desig.DepartmentName;
-                designation.DesignationName = desig.DesignationName;
-                designation.RoleName = desig.RoleName;
-                //designation.EmployeDetails = desig.EmployeDetails;
+                var designation = await desig.UpdateDesignation(id, design);
                 return Ok(designation);
             }
             catch(Exception e)
@@ -74,11 +86,7 @@ namespace EmployeeManagementSystem.Controllers
         {
             try
             {
-                var result = await dbContext.Designation.FindAsync(id);
-                if (result == null)
-                    return NotFound();
-                 dbContext.Designation.Remove(result);
-                await dbContext.SaveChangesAsync();
+                var result = await desig.DeleteDesignation(id);
                 return Ok(result);
             }
             catch(Exception e)

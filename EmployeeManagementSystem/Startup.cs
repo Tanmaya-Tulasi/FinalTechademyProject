@@ -54,6 +54,7 @@ namespace EmployeeManagementSystem
             //  services.AddMvc();
            // services.AddTransient<IEmployeeRepository, EmployeeRepository>();
            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IDesignationRepository, DesignationRepository>();
             // services.AddScoped<EmployeeRepository>();
 
             //services.AddScoped<EmployeeRepository>(sp => {
@@ -69,20 +70,20 @@ namespace EmployeeManagementSystem
             //services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
 
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(x =>
-            //{
-            //    x.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuer = true,
-            //        ValidateAudience = true,
-            //        ValidateLifetime = true,
-            //        ValidateIssuerSigningKey = true,
-            //        ValidIssuer = "localhost",
-            //        ValidAudience = "localhost",
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwtConfig:Key"])),
-            //        ClockSkew = TimeSpan.Zero
-            //    };
-            //});
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(x =>
+              {
+                  x.TokenValidationParameters = new TokenValidationParameters
+                  {
+                      ValidateIssuer = true,
+                      ValidateAudience = true,
+                      ValidateLifetime = true,
+                      ValidateIssuerSigningKey = true,
+                      ValidIssuer = "localhost",
+                      ValidAudience = "localhost",
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwtConfig:Key"])),
+                      ClockSkew = TimeSpan.Zero
+                  };
+              });
 
         }
 
@@ -94,7 +95,7 @@ namespace EmployeeManagementSystem
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("swagger/v1/swagger.json", "v1");
+                c.SwaggerEndpoint("swagger/v1/swagger.json","v1");
                 c.RoutePrefix = "";
             });
             if (env.IsDevelopment())

@@ -18,6 +18,10 @@ namespace EmployeeManagementSystem.Core.Repository
         {
             _context = _dbContext;
         }
+        public EmployeeRepository()
+        {
+                
+        }
 
         public async Task<List<EmployeeDTO>> GetAllEmployee()
         {
@@ -83,6 +87,21 @@ namespace EmployeeManagementSystem.Core.Repository
                 var result=_context.Employee.Remove(employee);
                 await _context.SaveChangesAsync();
                 return result.Entity;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+        public async Task<EmployeeModel> GetById(int id)
+        {
+            try
+            {
+                var result = await _context.Employee.FirstOrDefaultAsync(t => t.ID == id);
+                if (result != null)
+                    return result;
+                else
+                    return null;
             }
             catch(Exception e)
             {

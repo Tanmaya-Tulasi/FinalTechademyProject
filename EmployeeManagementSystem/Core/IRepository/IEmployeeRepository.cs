@@ -13,6 +13,8 @@ namespace EmployeeManagementSystem.Core.IRepository
         public Task<EmployeeModel> AddEmployee(EmployeeModel employee);
         public Task<EmployeeModel> UpdateEmployee(int id, EmployeeModel employee);
         public Task<EmployeeModel> DeleteEmployee(int id);
+        public Task<EmployeeModel> GetById(int id);
+
 
     }
 }
