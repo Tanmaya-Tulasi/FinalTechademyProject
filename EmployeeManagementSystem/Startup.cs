@@ -1,6 +1,7 @@
 using EmployeeManagementSystem.Core.IRepository;
 using EmployeeManagementSystem.Core.Repository;
 using EmployeeManagementSystem.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,9 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EmployeeManagementSystem
@@ -45,12 +48,12 @@ namespace EmployeeManagementSystem
             //services.AddControllers();
 
 
-//            services.AddControllers().AddNewtonsoftJson(options =>
-//    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-//);
-          //  services.AddMvc();
-            //services.AddTransient<IEmployeeRepository, EmployeeRepository>();
-           //services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+            //  services.AddMvc();
+           // services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+           services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             // services.AddScoped<EmployeeRepository>();
 
             //services.AddScoped<EmployeeRepository>(sp => {
@@ -64,6 +67,22 @@ namespace EmployeeManagementSystem
 
 
             //services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+
+
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(x =>
+            //{
+            //    x.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuer = true,
+            //        ValidateAudience = true,
+            //        ValidateLifetime = true,
+            //        ValidateIssuerSigningKey = true,
+            //        ValidIssuer = "localhost",
+            //        ValidAudience = "localhost",
+            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["jwtConfig:Key"])),
+            //        ClockSkew = TimeSpan.Zero
+            //    };
+            //});
 
         }
 

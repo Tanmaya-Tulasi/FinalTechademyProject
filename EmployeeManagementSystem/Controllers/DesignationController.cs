@@ -60,7 +60,7 @@ namespace EmployeeManagementSystem.Controllers
                 designation.DepartmentName = desig.DepartmentName;
                 designation.DesignationName = desig.DesignationName;
                 designation.RoleName = desig.RoleName;
-                designation.EmployeDetails = desig.EmployeDetails;
+                //designation.EmployeDetails = desig.EmployeDetails;
                 return Ok(designation);
             }
             catch(Exception e)

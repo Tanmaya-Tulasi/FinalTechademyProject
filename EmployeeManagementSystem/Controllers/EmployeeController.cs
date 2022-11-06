@@ -1,6 +1,7 @@
 ﻿using EmployeeManagementSystem.Core.IRepository;
 using EmployeeManagementSystem.Core.Repository;
 using EmployeeManagementSystem.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,45 +14,48 @@ namespace EmployeeManagementSystem.Controllers
     [Route("api/[Controller]")]
     public class EmployeeController : Controller
     {
-        private readonly EmployeeRepository employeeRepository;
+        private readonly IEmployeeRepository employeeRepository;
 
-        public EmployeeController(EmployeeRepository _employeeRepository)
+        public EmployeeController(IEmployeeRepository _employeeRepository)
         {
             employeeRepository = _employeeRepository;
         }
         [HttpGet]
-        public List<EmployeeDTO> GetAllEmployees()
+        public async Task<ActionResult> GetAllEmployees()
         {
             try
             {
-                var employee = employeeRepository.GetAllEmployee();
-                return (employee);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-        [HttpPost]
-        public  IActionResult AddEmployee([FromBody] EmployeeModel employee)
-        {
-            try
-            {
-                var emp = employeeRepository.AddEmployee(employee);
+                var employee =await employeeRepository.GetAllEmployee();
                 return Ok(employee);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 return BadRequest(e);
             }
         }
-        [HttpDelete]
-        [Route("{id:int}")]
-        public IActionResult DeleteEmployee([FromRoute] int id)
+        [HttpPost]
+        public async  Task<ActionResult> AddEmployee([FromBody] EmployeeModel employee)
         {
             try
             {
-                var employee = employeeRepository.DeleteEmployee(id);
+                var emp = await employeeRepository.AddEmployee(employee);
+                return CreatedAtAction(nameof(GetAllEmployees), new
+                {
+                    id = emp.ID
+                }, emp);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> DeleteEmployee([FromRoute] int id)
+        {
+            try
+            {
+                var employee =await employeeRepository.DeleteEmployee(id);
 
                 return Ok(employee);
 
@@ -64,11 +68,17 @@ namespace EmployeeManagementSystem.Controllers
         }
         [HttpPut]
         [Route("{id:int}")]
-        public IActionResult UpdateEmployee([FromRoute] int id, EmployeeModel employee)
+        public async Task<IActionResult> UpdateEmployee([FromRoute] int id, EmployeeModel employee)
         {
             try
             {
-                var result = employeeRepository.UpdateEmployee(id, employee);
+                //var emp = await employeeRepository.UpdateEmployee(id,employee);
+                //return CreatedAtAction(nameof(GetAllEmployees), new
+                //{
+                //    id = emp.ID
+                //}, emp);
+
+                var result =await employeeRepository.UpdateEmployee(id, employee);
                 return Ok(result);
             }
             catch(Exception e)

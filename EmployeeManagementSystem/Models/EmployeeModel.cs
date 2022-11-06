@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagementSystem.Models
 {
+    [Table("Employee")]
     public class EmployeeModel
     {
         [Key]
@@ -17,9 +18,8 @@ namespace EmployeeManagementSystem.Models
         public string Address { get; set; }
         public string Email { get; set; }
         public string Gender { get; set; }
-       
-        public int DesignationID { get; set; }
-        public virtual DesignationModel Designation { get; set; }
+        public  int DesignationID { get; set; }
+        public DesignationModel Designation { get; set; }
         public DateTime MemberSince { get; set; }
     }
 }

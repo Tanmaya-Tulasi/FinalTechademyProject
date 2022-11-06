@@ -16,5 +16,6 @@ namespace EmployeeManagementSystem.Data
         public DbSet<EmployeeModel> Employee { get; set; }
         public DbSet<DesignationModel> Designation { get; set; }
         public DbSet<EmployeeDTO> EmployeeDTO { get; set; }
-    }
+        public DbSet<RegisterModel> Register { get; set; }
+     }
 }

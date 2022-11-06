@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmployeeManagementSystem.Models
 {
+    [Table("Designation")]
     public class DesignationModel
     {
         [Key]
@@ -14,6 +16,6 @@ namespace EmployeeManagementSystem.Models
         public string DepartmentName { get; set; }
         public string RoleName { get; set; }
         
-        public virtual ICollection<EmployeeModel> EmployeDetails { get; set; }
+        public ICollection<EmployeeModel> EmployeDetails { get; set; }
     }
 }

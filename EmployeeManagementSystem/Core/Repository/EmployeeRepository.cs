@@ -19,11 +19,15 @@ namespace EmployeeManagementSystem.Core.Repository
             _context = _dbContext;
         }
 
-        public  List<EmployeeDTO> GetAllEmployee()
+        public async Task<List<EmployeeDTO>> GetAllEmployee()
         {
+
+
+            //var empl=await _context.Employee.ToListAsync();
+            //return empl;
             try
             {
-                var employee =  _context.Employee
+                var employee =await _context.Employee
                     .Join(
                     _context.Designation,
                     emp => emp.DesignationID,
@@ -44,10 +48,11 @@ namespace EmployeeManagementSystem.Core.Repository
                         MemberSince = emp.MemberSince
 
                     }
-                    ).ToList();
-                if(employee!=null)
+                    ).ToListAsync();
+                await _context.SaveChangesAsync();
+                //if (employee != null)
                     return employee;
-                throw new Exception();
+                //throw new Exception();
             }
             catch
             {
@@ -58,9 +63,10 @@ namespace EmployeeManagementSystem.Core.Repository
         {
             try
             {
-                await _context.Employee.AddAsync(employee);
+                var result =await _context.Employee.AddAsync(employee);
                 await _context.SaveChangesAsync();
-                return employee;
+              //  var emp = _context.Employee.Find(employee.ID);
+                return result.Entity;
             }
             catch(Exception e)
             {
@@ -74,8 +80,9 @@ namespace EmployeeManagementSystem.Core.Repository
                 var employee = await _context.Employee.FindAsync(id);
                 if (employee == null)
                     throw new Exception();
-                _context.Employee.Remove(employee);
-                return employee;
+                var result=_context.Employee.Remove(employee);
+                await _context.SaveChangesAsync();
+                return result.Entity;
             }
             catch(Exception e)
             {
@@ -97,6 +104,8 @@ namespace EmployeeManagementSystem.Core.Repository
                     e.Gender = employee.Gender;
                     e.DesignationID = employee.DesignationID;
                     e.Designation = employee.Designation;
+                    e.MemberSince = employee.MemberSince;
+                    
                     await _context.SaveChangesAsync();
                     return employee;
                 }
