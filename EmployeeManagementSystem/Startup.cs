@@ -55,6 +55,9 @@ namespace EmployeeManagementSystem
            // services.AddTransient<IEmployeeRepository, EmployeeRepository>();
            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IDesignationRepository, DesignationRepository>();
+            services.AddScoped<IWorkingHourRepository, WorkingHourRepository>();
+            services.AddScoped<IRequestLeaveRepository,RequestLeaveRepository>();
+
             // services.AddScoped<EmployeeRepository>();
 
             //services.AddScoped<EmployeeRepository>(sp => {
@@ -108,6 +111,7 @@ namespace EmployeeManagementSystem
             app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseRouting();
+
 
             app.UseCors("AllowOrigin");
 

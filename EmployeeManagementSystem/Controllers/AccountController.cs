@@ -14,6 +14,7 @@ namespace EmployeeManagementSystem.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [EnableCors("AllowOrigin")]
     public class AccountController : Controller
     {
         private readonly IConfiguration _config;
@@ -49,8 +50,10 @@ namespace EmployeeManagementSystem.Controllers
                    useravailable.UserID.ToString(),
                    useravailable.FirstName,
                    useravailable.LastName,
-                   useravailable.Email
-                 
+                   useravailable.Email,
+                   useravailable.MobileNumber,
+                   useravailable.Gender
+
                 ));
             }
             return Ok("Failure");

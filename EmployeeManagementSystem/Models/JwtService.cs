@@ -24,7 +24,7 @@ namespace EmployeeManagementSystem.Models
                 "Config").GetSection("Key").Value;
             this.TokenDuration = (config.GetSection("jwtConfig").GetSection("Duration").Value);
         }
-        public string GenerateToken(string id, string firstname, string lastname, string email)
+        public string GenerateToken(string id, string firstname, string lastname, string email,string mobile, string gender)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.SecretyKey));
             var signature = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -33,7 +33,9 @@ namespace EmployeeManagementSystem.Models
                 new Claim("id",id),
                 new Claim("firstname",firstname),
                 new Claim("lastname",lastname),
-                new Claim("email",email)
+                new Claim("email",email),
+                new Claim("mobilenumber", mobile),
+                new Claim("gender",gender)
                 
         };
 
@@ -47,7 +49,7 @@ namespace EmployeeManagementSystem.Models
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
 
-        internal object? GenerateToken(object value, object firstName, object lastName, object email)
+        internal object? GenerateToken(object value, object firstName, object lastName, object email,object mobileNumber,object gender)
         {
             throw new NotImplementedException();
         }

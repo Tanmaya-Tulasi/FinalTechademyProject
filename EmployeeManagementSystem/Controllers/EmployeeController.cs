@@ -1,6 +1,7 @@
 ﻿using EmployeeManagementSystem.Core.IRepository;
 using EmployeeManagementSystem.Core.Repository;
 using EmployeeManagementSystem.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,14 +13,13 @@ namespace EmployeeManagementSystem.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
+    [EnableCors("AllowOrigin")]
+
     public class EmployeeController : Controller
     {
         private readonly IEmployeeRepository employeeRepository;
 
-        public EmployeeController()
-        {
-
-        }
+    
         public EmployeeController(IEmployeeRepository _employeeRepository)
         {
             employeeRepository = _employeeRepository;

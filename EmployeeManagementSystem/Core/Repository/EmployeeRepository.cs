@@ -18,10 +18,7 @@ namespace EmployeeManagementSystem.Core.Repository
         {
             _context = _dbContext;
         }
-        public EmployeeRepository()
-        {
-                
-        }
+     
 
         public async Task<List<EmployeeDTO>> GetAllEmployee()
         {
@@ -39,7 +36,6 @@ namespace EmployeeManagementSystem.Core.Repository
                     (emp, des) => new EmployeeDTO
                     {
                         ID = emp.ID,
-                        EmployeeID = emp.EmployeeID,
                         EmployeeName = emp.EmployeeName,
                         Gender = emp.Gender,
                         PhoneNumber = emp.PhoneNumber,
@@ -115,18 +111,17 @@ namespace EmployeeManagementSystem.Core.Repository
             {
                 if (e != null)
                 {
-                    e.EmployeeID = employee.EmployeeID;
+                    e.ID = employee.ID;
                     e.EmployeeName = employee.EmployeeName;
                     e.PhoneNumber = employee.PhoneNumber;
                     e.Address = employee.Address;
                     e.Email = employee.Email;
                     e.Gender = employee.Gender;
                     e.DesignationID = employee.DesignationID;
-                    e.Designation = employee.Designation;
                     e.MemberSince = employee.MemberSince;
                     
                     await _context.SaveChangesAsync();
-                    return employee;
+                    return e;
                 }
                 else
                     throw new Exception();

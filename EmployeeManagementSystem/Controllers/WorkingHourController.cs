@@ -1,10 +1,7 @@
 ﻿using EmployeeManagementSystem.Core.IRepository;
-using EmployeeManagementSystem.Core.Repository;
-using EmployeeManagementSystem.Data;
 using EmployeeManagementSystem.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,38 +13,34 @@ namespace EmployeeManagementSystem.Controllers
     [Route("api/[controller]")]
     [EnableCors("AllowOrigin")]
 
-    public class DesignationController : Controller
+    public class WorkingHourController : Controller
     {
-        private readonly IDesignationRepository desig;
+        private readonly IWorkingHourRepository hourRepository;
 
-        public DesignationController( IDesignationRepository _designation)
+        public WorkingHourController(IWorkingHourRepository _hourRepository)
         {
-            desig = _designation;
+            hourRepository = _hourRepository;
         }
-
         [HttpGet]
-        public async Task<IActionResult> GetDesignations()
+        public async Task<IActionResult> GetWorkingHours()
         {
             try
             {
-                var result = await desig.GetDesignations();
-                return Ok(result);
+                var hours = await hourRepository.GetWorkingHours();
+                return Ok(hours);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(e);
             }
         }
-        [HttpGet]
-        [Route("{ID:int}")]
-        public async Task<IActionResult> GetEmployeeById(int ID)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetWorkingHoursByID(int id)
         {
             try
             {
-                var result = await desig.GetDesignationById(ID);
-                if (result == null)
-                    return NotFound();
-                return Ok(result);
+                var hours = await hourRepository.GetWorkingHoursById(id);
+                return Ok(hours);
             }
             catch (Exception e)
             {
@@ -55,13 +48,11 @@ namespace EmployeeManagementSystem.Controllers
             }
         }
         [HttpPost]
-        
-        public async Task<IActionResult> AddDesignation([FromBody] DesignationModel designation)
+        public async Task<IActionResult> AddHours([FromBody] WorkingHourModel hourModel)
         {
             try
             {
-                var result = await desig.AddDesignation(designation);
-                
+                var result = await hourRepository.AddHours(hourModel);
                 return Ok(result);
             }
             catch(Exception e)
@@ -71,12 +62,12 @@ namespace EmployeeManagementSystem.Controllers
         }
         [HttpPut]
         [Route("{id:int}")]
-        public async Task<IActionResult> UpdateDesignation([FromRoute] int id, DesignationModel design)
+        public async Task<IActionResult> UpdateHours([FromRoute] int id, WorkingHourModel hours)
         {
             try
             {
-                var designation = await desig.UpdateDesignation(id, design);
-                return Ok(designation);
+                var result = await hourRepository.UpdateWorkingHours(id, hours);
+                return Ok(result);
             }
             catch(Exception e)
             {
@@ -85,11 +76,11 @@ namespace EmployeeManagementSystem.Controllers
         }
         [HttpDelete]
         [Route("{id:int}")]
-        public async Task<IActionResult> DeleteDesignation([FromRoute] int id)
+        public async Task<IActionResult> DeleteHours(int id)
         {
             try
             {
-                var result = await desig.DeleteDesignation(id);
+                var result = await hourRepository.DeleteHours(id);
                 return Ok(result);
             }
             catch(Exception e)
@@ -97,7 +88,5 @@ namespace EmployeeManagementSystem.Controllers
                 return BadRequest(e);
             }
         }
-
-        
     }
 }

@@ -76,6 +76,7 @@ namespace EmployeeManagementSystem.Core.Repository
                 designation.DesignationName = desig.DesignationName;
                 designation.RoleName = desig.RoleName;
                 designation.EmployeDetails = desig.EmployeDetails;
+                await dbContext.SaveChangesAsync();
                 return designation;
             }
             catch (Exception e)
@@ -83,6 +84,7 @@ namespace EmployeeManagementSystem.Core.Repository
                 throw e;
             }
         }
+        
         public async Task<DesignationModel> DeleteDesignation( int id)
         {
             try
