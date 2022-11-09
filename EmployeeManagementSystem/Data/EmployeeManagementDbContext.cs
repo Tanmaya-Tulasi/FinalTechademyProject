@@ -19,5 +19,6 @@ namespace EmployeeManagementSystem.Data
         public DbSet<RegisterModel> Register { get; set; }
         public DbSet<WorkingHourModel> WorkingHours { get; set; }
         public DbSet<RequestLeave> RequestLeave { get; set; }
+        public DbSet<PaymentRulesModel> PaymentRules { get; set; }
      }
 }

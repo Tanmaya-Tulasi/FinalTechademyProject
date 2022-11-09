@@ -18,7 +18,10 @@ namespace EmployeeManagementSystem.Core.Repository
         {
             _context = _dbContext;
         }
-     
+
+        public EmployeeRepository()
+        {
+        }
 
         public async Task<List<EmployeeDTO>> GetAllEmployee()
         {

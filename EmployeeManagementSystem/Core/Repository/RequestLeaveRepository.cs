@@ -46,8 +46,7 @@ namespace EmployeeManagementSystem.Core.Repository
 
         public async Task<RequestLeave> UpdateLeave(int LeaveID, RequestLeave requestLeave)
         {
-            var result = await employeeContext.RequestLeave
-     .FirstOrDefaultAsync(w => w.LeaveID == requestLeave.LeaveID);
+            var result = await employeeContext.RequestLeave.FindAsync(LeaveID);
             if (result != null)
             {
                 result.EmployeeID = requestLeave.EmployeeID;
@@ -62,14 +61,12 @@ namespace EmployeeManagementSystem.Core.Repository
         }
         public async Task<RequestLeave> GetLeave(int LeaveID)
         {
-            return await employeeContext.RequestLeave.
-                FirstOrDefaultAsync(l => l.LeaveID == LeaveID);
+            return await employeeContext.RequestLeave.FindAsync(LeaveID);
         }
 
         public async Task<RequestLeave> DeleteLeave(int LeaveID)
         {
-            var result = await employeeContext.RequestLeave.
-                FirstOrDefaultAsync(w => w.LeaveID == LeaveID);
+            var result = await employeeContext.RequestLeave.FindAsync(LeaveID);
             if (result != null)
             {
                 employeeContext.RequestLeave.Remove(result);

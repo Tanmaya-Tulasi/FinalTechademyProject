@@ -57,6 +57,8 @@ namespace EmployeeManagementSystem
             services.AddScoped<IDesignationRepository, DesignationRepository>();
             services.AddScoped<IWorkingHourRepository, WorkingHourRepository>();
             services.AddScoped<IRequestLeaveRepository,RequestLeaveRepository>();
+            services.AddScoped<IPaymentRulesRepository, PaymentRulesRepository>();
+
 
             // services.AddScoped<EmployeeRepository>();
 
