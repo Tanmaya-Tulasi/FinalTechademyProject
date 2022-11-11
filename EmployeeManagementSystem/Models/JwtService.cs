@@ -36,8 +36,7 @@ namespace EmployeeManagementSystem.Models
                 new Claim("email",email),
                 new Claim("mobilenumber", mobile),
                 new Claim("gender",gender)
-                
-        };
+            };
 
             var jwtToken = new JwtSecurityToken(
                 issuer: "localhost",

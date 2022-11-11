@@ -19,9 +19,7 @@ namespace EmployeeManagementSystem.Core.Repository
             _context = _dbContext;
         }
 
-        public EmployeeRepository()
-        {
-        }
+        
 
         public async Task<List<EmployeeDTO>> GetAllEmployee()
         {
@@ -109,7 +107,7 @@ namespace EmployeeManagementSystem.Core.Repository
         }
         public async Task<EmployeeModel> UpdateEmployee(int id,EmployeeModel employee)
         {
-            var e = await _context.Employee.FindAsync(id);
+            var e = await _context.Employee.FirstOrDefaultAsync(t =>t.ID == id);
             try 
             {
                 if (e != null)
@@ -127,7 +125,7 @@ namespace EmployeeManagementSystem.Core.Repository
                     return e;
                 }
                 else
-                    throw new Exception();
+                    throw new Exception("id not found");
             }
             catch
             {

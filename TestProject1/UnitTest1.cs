@@ -9,6 +9,7 @@ using EmployeeManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Threading.Tasks;
 
 namespace TestProject1
@@ -19,14 +20,14 @@ namespace TestProject1
         [TestMethod]
         public void ReturnNotFound()
         {
-            var repository = new Mock<IEmployeeRepository>();
-            var controller = new EmployeeController(repository.Object);
 
-            var action = controller.GetEmployeeById(999);
-            var emp = new EmployeeController();
-            var ne = emp.GetEmployeeById(1);
-
-            Assert.IsInstanceOfType(ne, typeof(NotFoundResult));
+            var controller = new EmployeeRepository();
+            var action = controller.GetById(999);
+            var emp = new EmployeeRepository();
+            var ne = emp.GetById(1);
+            Assert.IsNotNull(ne);
+            Assert.AreEqual(1,action.Id);
+            Assert.IsInstanceOfType(action, typeof(Task<EmployeeModel>));
         }
         [TestMethod]
         public void ReturnOnDelete()
@@ -45,10 +46,11 @@ namespace TestProject1
         {
             var emp = new EmployeeController();
             var emp1 = new EmployeeRepository();
-            var e = emp.GetEmployeeById(999);
-            
-
-           // Assert.IsInstanceOfType(e, typeof(Task<NotFoundResult>));
+            var e = emp1.GetById(999);
+            Console.WriteLine(e);
+           Assert.IsInstanceOfType(e, typeof(Task<EmployeeModel>));
+            var  u= emp1.DeleteEmployee(999);
+            Assert.IsNotInstanceOfType(e,typeof(EmployeeModel));
         }
 
     }

@@ -18,6 +18,10 @@ namespace EmployeeManagementSystem.Core.Repository
             dbContext = _dbContext;
         }
 
+        public DesignationRepository()
+        {
+        }
+
         public async Task<List<DesignationModel>> GetDesignations()
         {
             try
